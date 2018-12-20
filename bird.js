@@ -11,7 +11,7 @@ class bird {
     if(brain){
       this.brain = brain.copy()
     }else{
-      this.brain = new fnn([4, 4, 1])
+      this.brain = new fnn([4, 10, 1])
     }
     this.score = 0
   }
