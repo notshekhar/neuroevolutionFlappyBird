@@ -63,11 +63,5 @@ class bird {
     }
     this.brain.mutate(func)
   }
-  dmutate(x){
-    function func(y){
-      return y/x
-    }
-    this.brain.mutate(func)
-  }
 
 }
