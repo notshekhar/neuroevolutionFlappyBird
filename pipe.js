@@ -3,7 +3,7 @@ class pipe {
     this.limitW = canvas.width
     this.limitH = canvas.height
     this.x = canvas.width
-    this.width = 40
+    this.width = 100
     this.v = -6.0
     this.topHeight = Math.floor(Math.random()*((this.limitH/1.4)-(this.limitH/4)+1)+this.limitH/4)
     this.bottomY = this.topHeight+200
@@ -22,7 +22,7 @@ class pipe {
     this.x+=this.v
   }
   offscreen(){
-    if(this.x<-40){
+    if(this.x<-this.width){
       return true
     }else{
       return false
