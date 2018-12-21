@@ -1,6 +1,7 @@
 class bird {
-  constructor(canvas, size, brain) {
+  constructor(canvas, size, color, brain) {
     this.x = 200
+    this.color = color
     this.y = canvas.height/2
     this.limitH = canvas.height
     this.limitW = canvas.width
@@ -18,7 +19,7 @@ class bird {
   show(ctx){
     // console.log(this)
     ctx.beginPath()
-    ctx.fillStyle = 'rgba(255,255,255, 0.4)'
+    ctx.fillStyle = this.color
     ctx.strokeStyle = 'white'
     ctx.arc(this.x, this.y, this.r, 0, 2*Math.PI)
     ctx.fill()
