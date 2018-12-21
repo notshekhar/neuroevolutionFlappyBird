@@ -1,7 +1,9 @@
 let canvas = document.querySelector('#canvas')
 let ctx = canvas.getContext('2d')
 let pipes = new Array()
-let total = 600
+let minPopulation = 10
+population = 30
+let total = minPopulation*population
 let diedBirds = []
 let birds = []
 for(let i=0; i<total; i++){
@@ -63,11 +65,12 @@ function draw(){
     pipes.push(new pipe(canvas))
     score = 0
   }
-}
-setInterval(function(){
   score++
+}
+
+setInterval(function(){
   draw()
 }, 20)
 setInterval(function(){
   pipes.push(new pipe(canvas))
-}, 1000)
+}, 1200)
