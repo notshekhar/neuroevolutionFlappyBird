@@ -1,7 +1,8 @@
 let genes = null
-function nextGeneration(canvas, total, birds, size, diedBirds){
+function nextGeneration(canvas, total, birds, size, color, diedBirds){
   // console.log('died', diedBirds)
   let fittest
+  let n = -1
   if(genes){
     fittest = tenFittest(diedBirds, genes)
     genes = fittest
@@ -15,13 +16,17 @@ function nextGeneration(canvas, total, birds, size, diedBirds){
     let mutationRate = Math.random()*0.99
     for(let i=0; i<fittest.length; i++){
       let brain = fittest[i].brain.copy()
-      let childBird = new bird(canvas, 20, brain)
+      let childBird
+      if(i == 0){
+        childBird = new bird(canvas, 20, 'rgba(0, 0, 255, 0.4)', brain)
+      }else{
+        childBird = new bird(canvas, 20, 'rgba(255, 255, 255, 0.4)', brain)
+      }
       childBird.mutate(mutationRate)
       birds.push(childBird)
+      n++
     }
-  }
-  for(let i=10; i<birds.length; i+=3){
-    dropout(birds[i])
+    birds[n] = dropout(birds[n])
   }
 }
 function mostFittest(diedBirds){
@@ -54,10 +59,7 @@ function tenFittest(diedBirds, genes){
   return tfittest
 }
 function dropout(b){
-  for(let k=0; k<b.brain.weights.length; k++){
-    let i = Math.floor(Math.random()*b.brain.weights[k].rows)
-    let j = Math.floor(Math.random()*b.brain.weights[k].cols)
-    b.brain.weights[k].data[i][j] = 0
-    b.brain.bias[k].data[i][j] = 0
-  }
+  let brain = new fnn(b.brain.neurons, b.brain.lr)
+  let n = new bird(canvas, 20, 'rgba(255,0,0,0.4)', brain)
+  return n
 }
