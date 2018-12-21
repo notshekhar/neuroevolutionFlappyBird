@@ -7,7 +7,7 @@ let total = minPopulation*population
 let diedBirds = []
 let birds = []
 for(let i=0; i<total; i++){
-  birds.push(new bird(canvas, 20))
+  birds.push(new bird(canvas, 20, 'rgba(255,255,255,0.4)'))
 }
 pipes.push(new pipe(canvas))
 let hscore = 0
@@ -58,7 +58,7 @@ function draw(){
     if(score==hscore || score-9 > hscore){
       localStorage.setItem('hscore', score)
     }
-    nextGeneration(canvas, total, birds, 20, diedBirds)
+    nextGeneration(canvas, total, birds, 20, 'rgba(255,255,255,0.4)', diedBirds)
     generation++
     diedBirds = []
     pipes = []
