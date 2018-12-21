@@ -629,11 +629,34 @@ function dtanh(y){
 class fnn {
   constructor(arr, lr) {
     if(arr instanceof fnn){
-      let a = arr
-      this.neurons = a.neurons
-      this.weights = a.weights
-      this.bias = a.bias
-      this.lr = a.lr
+      let nn = arr
+      this.neurons = []
+      for(let i=0; i<nn.neurons.length; i++){
+        this.neurons.push(nn.neurons[i])
+      }
+      this.weights = []
+      nn.weights.forEach(weight=>{
+        this.weights.push(new Matrix(weight.rows, weight.cols))
+      })
+      for(let k=0; k<nn.weights.length; k++){
+        for(let i=0; i<nn.weights[k].rows; i++){
+          for(let j=0; j<nn.weights[k].cols; j++){
+            this.weights[k].data[i][j] = nn.weights[k].data[i][j]
+          }
+        }
+      }
+      this.bias = []
+      nn.bias.forEach(b=>{
+        this.bias.push(new Matrix(b.rows, b.cols))
+      })
+      for(let k=0; k<nn.bias.length; k++){
+        for(let i=0; i<nn.bias[k].rows; i++){
+          for(let j=0; j<nn.bias[k].cols; j++){
+            this.bias[k].data[i][j] = nn.bias[k].data[i][j]
+          }
+        }
+      }
+      this.lr = nn.lr
     }else{
       this.neurons = [];
       this.weights = [];
@@ -706,7 +729,7 @@ class fnn {
       this.weights[i] = this.weights[i].add(dweight);
    }
   }
-  copy(){
+copy(){
     let nn = new fnn(this)
     return nn
   }
