@@ -1,45 +1,63 @@
+let genes = null
 function nextGeneration(canvas, total, birds, size, diedBirds){
-  // console.log(diedBirds)
-  let fittest = mostFittest(diedBirds)
-  // console.table(fittest.brain.weights[0].data)
-
-  //reprodusing new population
-  for(let i=total-1; i>-1; i--){
-    let brain = diedBirds[i].brain.copy()
-    let childBird = new bird(canvas, 20, brain)
-    childBird.mutate(0.9)
-    birds.push(childBird)
-
-    //else
-
-    // let brain = fittest.brain.copy()
-    // let childBird = new bird(canvas, 20, brain)
-    // let ran = Math.random()*0.9
-    // childBird.mutate(ran)
-    // // console.log('child');
-    // // console.table(childBird.brain.weights[0].data)
-    // birds.push(childBird)
-    // childBird.dmutate(ran)
+  // console.log('died', diedBirds)
+  let fittest
+  if(genes){
+    fittest = tenFittest(diedBirds, genes)
+    genes = fittest
+    // console.log(genes)
+  }else{
+    fittest = tenFittest(diedBirds)
+    genes = fittest
   }
-}
-
-function calculateFittness(diedBirds){
-  let sum = 0
-  diedBirds.forEach(bird=>{
-    sum+=bird.score
-  })
-  diedBirds.forEach(bird=>{
-    bird.fittness = sum/bird.score
-  })
+  //reprodusing new population
+  for(let i=0; i<total/10; i++){
+    let mutationRate = Math.random()*0.99
+    for(let i=0; i<fittest.length; i++){
+      let brain = fittest[i].brain.copy()
+      let childBird = new bird(canvas, 20, brain)
+      childBird.mutate(mutationRate)
+      birds.push(childBird)
+    }
+  }
+  for(let i=10; i<birds.length; i+=3){
+    dropout(birds[i])
+  }
 }
 function mostFittest(diedBirds){
   let fittest = null
   let n = 0
   for(let i=0; i<diedBirds.length; i++){
     if(diedBirds[i].score>n){
-      n = diedBirds[i].score
+      n = i
       fittest = diedBirds[i]
     }
   }
-  return fittest
+  return {'fittest': fittest, 'number': n}
+}
+function tenFittest(diedBirds, genes){
+  let dBirds = diedBirds
+  let tfittest = []
+  for(let i=0; i<10; i++){
+    let fittest = mostFittest(dBirds)
+    tfittest.push(fittest.fittest)
+    dBirds.splice(fittest.number, 1)
+  }
+  if(genes){
+    for(let i=0; i<3; i++){
+      if(tfittest[i].score<genes[i].score){
+        tfittest[tfittest.length-(i+1)] = genes[i]
+        console.log('replaced')
+      }
+    }
+  }
+  return tfittest
+}
+function dropout(b){
+  for(let k=0; k<b.brain.weights.length; k++){
+    let i = Math.floor(Math.random()*b.brain.weights[k].rows)
+    let j = Math.floor(Math.random()*b.brain.weights[k].cols)
+    b.brain.weights[k].data[i][j] = 0
+    b.brain.bias[k].data[i][j] = 0
+  }
 }
