@@ -48,9 +48,8 @@ function draw(){
   pipes.forEach(pipe=>{
     for(let i=0; i<birds.length; i++){
       if(pipe.hits(birds[i])){
-        diedBirds.push(birds[i])
+        diedBirds.unshift(birds[i])
         birds.splice(i, 1)
-        // console.log(diedBirds)
       }
     }
   })
@@ -58,7 +57,8 @@ function draw(){
     if(score==hscore || score-9 > hscore){
       localStorage.setItem('hscore', score)
     }
-    nextGeneration(canvas, total, birds, 20, 'rgba(255,255,255,0.4)', diedBirds)
+    nextGeneration()
+    console.log(birds.length)
     generation++
     diedBirds = []
     pipes = []
