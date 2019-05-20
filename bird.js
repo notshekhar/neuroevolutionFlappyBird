@@ -14,7 +14,7 @@ class bird {
     }else{
       this.brain = new fnn([4, 10, 1])
     }
-    this.score = 0
+    this.fitness = 0
   }
   show(ctx){
     // console.log(this)
@@ -26,7 +26,7 @@ class bird {
     ctx.stroke()
   }
   fall(){
-    this.score++
+    this.fitness++
     this.v += this.gravity
     this.v *= this.resistance
     this.y += this.v
